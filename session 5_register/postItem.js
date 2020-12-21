@@ -1,6 +1,8 @@
-import { convertDate } from "./utils.js"
+import {
+    convertDate
+} from "./utils.js"
 
-const style =`
+const style = `
 }
 .list-post{
     width: 60%;
@@ -21,21 +23,25 @@ const style =`
     font-family: 'Roboto' serif;
 }
 `
-class PostItem extends HTMLElement{
-    constructor(){
+class PostItem extends HTMLElement {
+    constructor() {
         super()
-        this._shadowDom = this.attachShadow({mode: 'open'})
+        this._shadowDom = this.attachShadow({
+            mode: 'open'
+        })
     }
-    connectedCallback(){
+    connectedCallback() {
         this.author = this.getAttribute('author')
         this.time = convertDate(this.getAttribute('time'))
         this.content = this.getAttribute('content')
-        this._shadowDom.innerHTML =`
-        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        this.img = this.getAttribute('img')
+        const imgElm = this.img ? `<div class="image">${this.img}</div>` : '' 
+        this._shadowDom.innerHTML = `
         <style>${style}</style>
         <div class="post-item">
                 <div class="author-name">${this.author}</div>
                 <div class="time">${this.time}</div>
+                ${imgElm}
                 <div class="content">
                         ${this.content}
                     </div>

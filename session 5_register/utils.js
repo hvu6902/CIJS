@@ -32,5 +32,15 @@ export function convertDate(dateStr) {
     return `${day}/${month}/${year} ${hour}:${minutes}`
 }
 function validateNiceNumber(number){
-    return number < 10 ? '0' + number : number
+    return (number < 10 ) ? ('0' + number) : (number)
+}
+export async function uploadFileToStorage (file){
+    const fileName = file.name
+    const filePath = `file/${fileName}`
+    const ref = firebase.storage().ref().child(filePath)
+    await ref.put(file)
+    return getFileurl(ref)
+}
+function getFileurl(fileRef){
+    return `https://firebasestorage.googleapis.com/v0/b/${fileRef.bucket}/o/${encodeURIComponent(fileRef.fullPath)}?alt=media`
 }

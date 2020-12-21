@@ -25,9 +25,7 @@ button {
     border-radius: 5px;
 }
 `
-import {
-    redirect
-} from '../index.js'
+
 class RegisterScreen extends HTMLElement {
     constructor() {
         super()
@@ -112,7 +110,7 @@ class RegisterScreen extends HTMLElement {
             
         })
         this._shadowRoot.getElementById('redirect').addEventListener('click', () => {
-            redirect('login')
+            router.navigate('login')
         })
     }
     setError(id, message) {

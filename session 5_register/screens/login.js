@@ -27,9 +27,6 @@ button {
 }
 `
 import {
-    redirect
-} from '../index.js'
-import {
     getDataFromDocs, saveToLocalStorage
 } from '../utils.js'
 class loginScreen extends HTMLElement {
@@ -87,13 +84,13 @@ class loginScreen extends HTMLElement {
                 alert('Email or password is wrong, try again')
             } else {
                 saveToLocalStorage('currentUser', getDataFromDocs(user)[0])
-                redirect('story')
+                router.navigate('story')
                 
             }
 
         })
         this._shadowRoot.getElementById('redirect').addEventListener('click', () => {
-            redirect('register')
+            router.navigate('register')
         })
     }
     setError(id, message) {

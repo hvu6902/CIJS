@@ -1,4 +1,4 @@
-import { getItemFromLocalStorage } from "./utils.js"
+import { getItemFromLocalStorage, uploadFileToStorage } from "./utils.js"
 
 const style =`
 #create-post {
@@ -33,11 +33,12 @@ class CreatePost extends HTMLElement{
         <style>${style}</style>
         <form id="create-post">
             <textarea name="content" rows="6"> </textarea>
+            <input type="file" id="file">
             <button class="post">Post</button>
         </form>
         `
     const postForm = this._shadowDom.getElementById('create-post')
-    postForm.addEventListener('submit', (e) => {
+    postForm.addEventListener('submit', async (e) => {
         e.preventDefault()
         const content = postForm.content.value
         if (content.trim === ''){
@@ -52,9 +53,22 @@ class CreatePost extends HTMLElement{
             authorName: user.fullName ,
             isShow: true,
         }
-        firebase.firestore().collection('post').add(data)
+        const res = await firebase.firestore().collection('post').add(data)
+        const img = postForm.file.files
+        if (img.length > 0){
+            const files = img[0]
+            const url = await uploadFileToStorage(files)
+            this.updateListFile(url, res.id)
+        }
+        // firebase.firestore().collection('post').add(data)
         postForm.content.value = ''
     })
+    }
+    updateListFile(url, id){
+        const dataUpdate = {
+            files: firebase.firestore.FieldValue.arrayUnion(url)
+        }
+        firebase.firestore().collection('post').doc(id).update(dataUpdate)
     }
 }
 window.customElements.define('create-post',CreatePost)
