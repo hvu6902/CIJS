@@ -28,7 +28,7 @@ export function convertDate(dateStr) {
     const month = date.getMonth() + 1
     const year = date.getFullYear()
     const hour = validateNiceNumber(date.getHours())
-    const minutes = date.getMinutes() 
+    const minutes = validateNiceNumber(date.getMinutes()) 
     return `${day}/${month}/${year} ${hour}:${minutes}`
 }
 function validateNiceNumber(number){
@@ -38,7 +38,7 @@ export async function uploadFileToStorage (file){
     const fileName = file.name
     const filePath = `file/${fileName}`
     const ref = firebase.storage().ref().child(filePath)
-    await ref.put(file)
+    await ref.put(files)
     return getFileurl(ref)
 }
 function getFileurl(fileRef){

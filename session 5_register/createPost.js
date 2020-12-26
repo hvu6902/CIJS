@@ -56,8 +56,8 @@ class CreatePost extends HTMLElement{
         const res = await firebase.firestore().collection('post').add(data)
         const img = postForm.file.files
         if (img.length > 0){
-            const files = img[0]
-            const url = await uploadFileToStorage(files)
+            const image = img[0]
+            const url = await uploadFileToStorage(image)
             this.updateListFile(url, res.id)
         }
         // firebase.firestore().collection('post').add(data)
